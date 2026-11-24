@@ -1,0 +1,10 @@
+---
+title: "An Example of a Quarto Website"
+subtitle: "STAT 206 (MSBA)"
+---
+
+## Requirements
+
+- Quarto
+- Conda/Micromamba
+- GitHub repository with GitHub Pages

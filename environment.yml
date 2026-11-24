@@ -1,0 +1,11 @@
+name: quarto_web
+channels:
+  - conda-forge
+dependencies:
+  - python=3.14
+  - ipykernel
+  - jupyter
+  - matplotlib
+  - pandas
+  - seaborn
+  - statsmodels

@@ -1,0 +1,30 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  sidebar:
+    style: docked
+    title: "A Quarto Website"
+    collapse-level: 1
+    contents:
+    - text: "Home"
+      href: index.qmd
+    - text: "Palmer Penguins"
+      href: intro.qmd
+    - text: "Exploratory Data Analysis"
+      href: eda.qmd
+    - text: "Regression Analysis"
+      href: regression.qmd
+
+format:
+  html:
+    theme: sandstone
+    toc: true
+    code-line-numbers: true
+    grid:
+      sidebar-width: 350px
+
+execute:
+  engine: jupyter
+  freeze: auto
