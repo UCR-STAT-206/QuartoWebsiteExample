@@ -1,0 +1,152 @@
+[
+  {
+    "objectID": "regression.html",
+    "href": "regression.html",
+    "title": "Association Between Body Mass and Species",
+    "section": "",
+    "text": "We fit a regression model using all categorical variables:\n\\[\n\\text{Body Mass (g)} = \\beta_{0}\n+ \\text{Is Male} \\times \\beta_{1}\n+ \\text{Is Chinstrap} \\times \\beta_{2}\n+ \\text{Is Gentoo} \\times \\beta_{3}\n\\]\n\nHere \\(\\beta_{0}\\) is the average body mass of a female Adelie penguin. This is the reference group.\nThe coefficient \\(\\beta_{1}\\) captures the mean shift due to being a male penguin.\nThe coefficient \\(\\beta_{2}\\) captures the mean shift due to being a Chinstrap penguin.\nThe coefficient \\(\\beta_{3}\\) captures the mean shift due to being a Gentoo penguin.\n\nThere is no proper slope interpretation here because none of independent variables are continuous. Nevertheless, this model illustrates how linear regression models averages, conditional on the predictors.",
+    "crumbs": [
+      "Regression Analysis"
+    ]
+  },
+  {
+    "objectID": "regression.html#the-regression-model",
+    "href": "regression.html#the-regression-model",
+    "title": "Association Between Body Mass and Species",
+    "section": "",
+    "text": "We fit a regression model using all categorical variables:\n\\[\n\\text{Body Mass (g)} = \\beta_{0}\n+ \\text{Is Male} \\times \\beta_{1}\n+ \\text{Is Chinstrap} \\times \\beta_{2}\n+ \\text{Is Gentoo} \\times \\beta_{3}\n\\]\n\nHere \\(\\beta_{0}\\) is the average body mass of a female Adelie penguin. This is the reference group.\nThe coefficient \\(\\beta_{1}\\) captures the mean shift due to being a male penguin.\nThe coefficient \\(\\beta_{2}\\) captures the mean shift due to being a Chinstrap penguin.\nThe coefficient \\(\\beta_{3}\\) captures the mean shift due to being a Gentoo penguin.\n\nThere is no proper slope interpretation here because none of independent variables are continuous. Nevertheless, this model illustrates how linear regression models averages, conditional on the predictors.",
+    "crumbs": [
+      "Regression Analysis"
+    ]
+  },
+  {
+    "objectID": "regression.html#the-model-fit",
+    "href": "regression.html#the-model-fit",
+    "title": "Association Between Body Mass and Species",
+    "section": "The Model Fit",
+    "text": "The Model Fit\nWe use the statsmodels package to fit a regression model using the formula interface, similar to R’s interface. It’s good practice to summarize the fit of any model; a standard way of doing this for linear regression is to construct a regression table.\n\n\n\n\n\n\n\n\n\nEstimate\nStd. Error\nt\np-value\n\n\n\n\nIntercept\n3372.386808\n31.427241\n107.307759\n4.341117e-258\n\n\nIs Male\n667.555152\n34.703974\n19.235697\n8.729411e-56\n\n\nIs Chinstrap\n26.923852\n46.483414\n0.579214\n5.628410e-01\n\n\nIs Gentoo\n1377.858030\n39.104093\n35.235648\n1.051670e-113\n\n\n\n\n\n\n\n\nThe fitted model object in the code stores all the information we need. It was used to create this plot.\nThe standard errors can be used to construct confidence intervals around our estimates \\(\\beta_{j}\\).\nThe \\(t\\)-statistics are associated with hypothesis tests. Specifically, we use them to assess whether each \\(\\beta_{j} = 0\\) (null hypothesis). That is, we test each coefficient one at a time.\nIn practice, we should adjust the \\(p\\)-values due to our multiple comparisons.",
+    "crumbs": [
+      "Regression Analysis"
+    ]
+  },
+  {
+    "objectID": "regression.html#visualization",
+    "href": "regression.html#visualization",
+    "title": "Association Between Body Mass and Species",
+    "section": "Visualization",
+    "text": "Visualization\n\n\n\n\n\n\n\n\n\n\nThe reference group are female Adelie penguins.\nChanging each categorical variable, species or sex, yields a change in the mean.\nAdelie and Chinstrap penguins have similar body masses. This explains why \"Is Chinstrap\" has little effect (small coefficient) and relatively large \\(p\\)-value.",
+    "crumbs": [
+      "Regression Analysis"
+    ]
+  },
+  {
+    "objectID": "regression.html#issues",
+    "href": "regression.html#issues",
+    "title": "Association Between Body Mass and Species",
+    "section": "Issues",
+    "text": "Issues\n\nIn the EDA page, female was mapped to orange and male was mapped to blue. Here the colors are switched.\nOur Quarto pages have to reload nearly the same packages in each case.\nSome of the plots are long. Editing some of the options/settings is fragile because we hardcoded some values instead of using variables.\nWhat if we chose to analyze a different regression, or we added a continuous variable to the model? The regression table code would have to change in a few places.\n\nThe fix for most of these problems (and possibly others not listed here) is to put most of the project code inside functions.",
+    "crumbs": [
+      "Regression Analysis"
+    ]
+  },
+  {
+    "objectID": "eda.html",
+    "href": "eda.html",
+    "title": "Exploratory Data Analysis",
+    "section": "",
+    "text": "Unless you’re communicating to a technical audience that is specifically interested in seeing your code, you should consider using Quarto’s chunk options to hide the low-level details of your analysis. The #| echo: false option will disable showing code in the output. Check the eda.qmd source on GitHub to see how we load the packages and data.",
+    "crumbs": [
+      "Exploratory Data Analysis"
+    ]
+  },
+  {
+    "objectID": "eda.html#aside-hiding-code-chunks",
+    "href": "eda.html#aside-hiding-code-chunks",
+    "title": "Exploratory Data Analysis",
+    "section": "",
+    "text": "Unless you’re communicating to a technical audience that is specifically interested in seeing your code, you should consider using Quarto’s chunk options to hide the low-level details of your analysis. The #| echo: false option will disable showing code in the output. Check the eda.qmd source on GitHub to see how we load the packages and data.",
+    "crumbs": [
+      "Exploratory Data Analysis"
+    ]
+  },
+  {
+    "objectID": "eda.html#checking-for-balance-across-groups",
+    "href": "eda.html#checking-for-balance-across-groups",
+    "title": "Exploratory Data Analysis",
+    "section": "Checking for balance across groups",
+    "text": "Checking for balance across groups\n\n\n\n\n\n\n\n\n\n\nn\n\n\nspecies\nsex\n\n\n\n\n\nAdelie\nfemale\n73\n\n\nmale\n73\n\n\nChinstrap\nfemale\n34\n\n\nmale\n34\n\n\nGentoo\nfemale\n58\n\n\nmale\n61\n\n\n\n\n\n\n\nThe Adelie and Chinstrap groups are perfectly balanced, even after dropping entries with missing values. This will be an advantage for any hypothesis tests and suggests some control over confounding. However, keep in mind we are not looking at island; we saw before that it can be used as a proxy for species.",
+    "crumbs": [
+      "Exploratory Data Analysis"
+    ]
+  },
+  {
+    "objectID": "eda.html#some-descriptive-statistics",
+    "href": "eda.html#some-descriptive-statistics",
+    "title": "Exploratory Data Analysis",
+    "section": "Some descriptive statistics",
+    "text": "Some descriptive statistics\n\n\n\n\n\n\n\n\nFigure 1: Average body mass by species and sex.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nspecies\nn\nBody Mass (g)\n\n\n\n\n0\nAdelie\n146\n3706.16\n\n\n1\nChinstrap\n68\n3733.09\n\n\n2\nGentoo\n119\n5092.44\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nsex\nn\nBody Mass (g)\n\n\n\n\n0\nfemale\n165\n3862.27\n\n\n1\nmale\n168\n4545.68\n\n\n\n\n\n\n\nTreated separately, we can see that male penguins have a higher body mass across each species (Figure 1) When combined, the female penguins bring down the average body mass for each species. We can see this effect by examining average body mass by sex or species alone.",
+    "crumbs": [
+      "Exploratory Data Analysis"
+    ]
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "Introduction to the Palmer Penguins Dataset",
+    "section": "",
+    "text": "The palmerpenguins dataset was created as a modern and compelling alternative to the classic iris dataset. See this website to learn more about it.\nimport pandas as pd\n\npenguins = pd.read_csv(\"penguins.csv\")\n\npd.DataFrame({\n  \"Column\": penguins.columns,\n  \"Non-Null Count\": penguins.count().values,\n  \"Null Count\": penguins.isna().sum().values,\n  \"Null %\": (penguins.isna().mean() * 100).round(2).values,\n  \"Dtype\": penguins.dtypes.astype(str).values\n})\n\n\n\n\n\n\n\n\nColumn\nNon-Null Count\nNull Count\nNull %\nDtype\n\n\n\n\n0\nspecies\n344\n0\n0.00\nstr\n\n\n1\nisland\n344\n0\n0.00\nstr\n\n\n2\nbill_length_mm\n342\n2\n0.58\nfloat64\n\n\n3\nbill_depth_mm\n342\n2\n0.58\nfloat64\n\n\n4\nflipper_length_mm\n342\n2\n0.58\nfloat64\n\n\n5\nbody_mass_g\n342\n2\n0.58\nfloat64\n\n\n6\nsex\n333\n11\n3.20\nstr\n\n\n7\nyear\n344\n0\n0.00\nint64\nThe code cell above shows recreates the output of penguins.info(), but as a proper DataFrame.",
+    "crumbs": [
+      "Palmer Penguins"
+    ]
+  },
+  {
+    "objectID": "intro.html#data-dictionary",
+    "href": "intro.html#data-dictionary",
+    "title": "Introduction to the Palmer Penguins Dataset",
+    "section": "Data Dictionary",
+    "text": "Data Dictionary\nThe dataset contains information about 344 penguins and 8 variables.\n\nspecies: A categorical variable with 3 levels \"Adelie\", \"Chinstrap\", and \"Gentoo\" reflecting an individual penguin’s species.\nisland: A categorical variable with 3 levels \"Dream\", \"Biscoe\", and \"Torgersen\" indicating where a penguin lives.\nsex: The biological sex of a penguin with levels \"male\" and \"female\".\nyear: An integer denoting the study year (2007, 2008, or 2009).\n4 physical measurements bill_length_mm, bill_depth_mm, flipper_length_mm, and body_mass_g with the stated units.\n\nWe will drop entries with missing values, leaving a total of 333 penguins.",
+    "crumbs": [
+      "Palmer Penguins"
+    ]
+  },
+  {
+    "objectID": "intro.html#aside-make-the-computer-do-the-work",
+    "href": "intro.html#aside-make-the-computer-do-the-work",
+    "title": "Introduction to the Palmer Penguins Dataset",
+    "section": "Aside: Make the computer do the work",
+    "text": "Aside: Make the computer do the work\nCheck the source for intro.qmd on GitHub. We used inline code to display the dimensions of our dataset before and after dropping missing values.\n\nThis is a far better style than print(penguins.shape) or any variation of it. You’re creating a report, not displaying information on a terminal screen.\nIf anything ever changes in the data we use, the inline code chunks will automatically adapt as needed.",
+    "crumbs": [
+      "Palmer Penguins"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "An Example of a Quarto Website",
+    "section": "",
+    "text": "Quarto\nConda/Micromamba\nGitHub repository with GitHub Pages\nGrit",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#requirements",
+    "href": "index.html#requirements",
+    "title": "An Example of a Quarto Website",
+    "section": "",
+    "text": "Quarto\nConda/Micromamba\nGitHub repository with GitHub Pages\nGrit",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#packages",
+    "href": "index.html#packages",
+    "title": "An Example of a Quarto Website",
+    "section": "Packages",
+    "text": "Packages\nSee environment.yml for the latest version. At the time of writing, the file had the following information:\nname: quarto_web\nchannels:\n  - conda-forge\ndependencies:\n  - python=3.14\n  - ipykernel\n  - jupyter\n  - matplotlib\n  - pandas\n  - seaborn\n  - statsmodels",
+    "crumbs": [
+      "Home"
+    ]
+  }
+]
