@@ -1,3 +1,46 @@
 ---
 title: "Introduction to the Palmer Penguins Dataset"
 ---
+
+The `palmerpenguins` dataset was created as a modern and compelling alternative to the classic `iris` dataset.
+See [this website](https://allisonhorst.github.io/palmerpenguins/) to learn more about it.
+
+```{python}
+import pandas as pd
+
+penguins = pd.read_csv("penguins.csv")
+
+pd.DataFrame({
+  "Column": penguins.columns,
+  "Non-Null Count": penguins.count().values,
+  "Null Count": penguins.isna().sum().values,
+  "Null %": (penguins.isna().mean() * 100).round(2).values,
+  "Dtype": penguins.dtypes.astype(str).values
+})
+```
+
+The code cell above shows recreates the output of `penguins.info()`, but as a proper `DataFrame`.
+
+- The command just runs a `print()` command in the background. It's fine for REPL but not the best for presentation.
+- Certain objects have custom displays depending on context; e.g. how does a `DataFrame` display in `python`, `ipython`, and this website?
+- Avoid using any `print()` outputs in a report or presentation as much as possible.
+
+## Data Dictionary
+
+The dataset contains information about `{python} penguins.shape[0]` penguins and `{python} penguins.shape[1]` variables.
+
+- `species`: A categorical variable with 3 levels `"Adelie"`, `"Chinstrap"`, and `"Gentoo"` reflecting an individual penguin's species.
+- `island`: A categorical variable with 3 levels `"Dream"`, `"Biscoe"`, and `"Torgersen"` indicating where a penguin lives.
+- `sex`: The biological sex of a penguin with levels `"male"` and `"female"`.
+- `year`: An integer denoting the study year (`2007`, `2008`, or `2009`).
+- 4 physical measurements `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, and `body_mass_g` with the stated units. 
+
+We will drop entries with missing values, leaving a total of `{python} penguins.dropna().shape[0]` penguins.
+
+## Aside: Make the computer do the work
+
+Check the source for `intro.qmd` on GitHub.
+We used inline code to display the dimensions of our dataset before and after dropping missing values.
+
+- This is a far better style than `print(penguins.shape)` or any variation of it. You're creating a report, not displaying information on a terminal screen.
+- If anything ever changes in the data we use, the inline code chunks will automatically adapt as needed.

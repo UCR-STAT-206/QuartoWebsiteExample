@@ -1,3 +1,137 @@
 ---
 title: "Association Between Body Mass and Species"
 ---
+
+```{python}
+#| echo: false
+import itertools
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+import statsmodels.formula.api as smf
+
+np.random.seed(206) # used by jitter parameter in one of our plots
+
+penguins = pd.read_csv("penguins.csv").dropna()
+```
+
+## The Regression Model
+
+We fit a regression model using all categorical variables:
+
+$$
+\text{Body Mass (g)} = \beta_{0}
++ \text{Is Male} \times \beta_{1}
++ \text{Is Chinstrap} \times \beta_{2}
++ \text{Is Gentoo} \times \beta_{3}
+$$
+
+- Here $\beta_{0}$ is the average body mass of a female Adelie penguin. This is the reference group.
+- The coefficient $\beta_{1}$ captures the mean shift due to being a male penguin.
+- The coefficient $\beta_{2}$ captures the mean shift due to being a Chinstrap penguin.
+- The coefficient $\beta_{3}$ captures the mean shift due to being a Gentoo penguin.
+
+There is no proper slope interpretation here because none of independent variables are continuous.
+Nevertheless, this model illustrates how linear regression models averages, conditional on the predictors.
+
+## The Model Fit
+
+We use the `statsmodels` package to fit a regression model using the formula interface, similar to R's interface.
+It's good practice to summarize the fit of any model; a standard way of doing this for linear regression is to construct a regression table.
+
+```{python}
+#| echo: false
+model = (
+  smf.ols(
+    "body_mass_g ~ C(sex, Treatment(reference='female'))"
+    " + C(species, Treatment(reference='Adelie'))",
+    data = penguins
+  )
+  .fit()
+)
+
+# The model boject contains information for a regression table.
+regtable = pd.DataFrame({
+  "Estimate": model.params,
+  "Std. Error": model.bse,
+  "t": model.tvalues,
+  "p-value": model.pvalues,
+})
+
+# We change the labels of each coefficient to make them human-readable.
+regtable.index = ["Intercept", "Is Male", "Is Chinstrap", "Is Gentoo"]
+regtable
+```
+
+- The fitted `model` object in the code stores all the information we need. It was used to create this plot.
+- The standard errors can be used to construct confidence intervals around our estimates $\beta_{j}$.
+- The $t$-statistics are associated with hypothesis tests. Specifically, we use them to assess whether each $\beta_{j} = 0$ (null hypothesis). That is, we test each coefficient one at a time.
+- In practice, we should adjust the $p$-values due to our *multiple comparisons*.
+
+## Visualization
+
+```{python}
+#| fig-align: center
+#| echo: false
+# Fitted body mass for every combination of species and sex.
+# We use this to show the regression fit.
+species_order = ["Adelie", "Chinstrap", "Gentoo"]
+sex_order = ["female", "male"]
+fitted = pd.DataFrame(
+  list(itertools.product(species_order, sex_order)),
+  columns=["species", "sex"],
+)
+fitted["predicted"] = model.predict(fitted)
+
+# Set color options and offsets; here dodge = True places each sex
+colors = {"female": "#2a78d6", "male": "#eb6834"}
+offsets = {"female": -0.2, "male": 0.2}
+
+# Observed penguins
+fig, ax = plt.subplots()
+sns.stripplot(
+  data = penguins,
+  x = "species",
+  y = "body_mass_g",
+  hue = "sex",
+  order = species_order,
+  hue_order = sex_order,
+  palette = colors,
+  dodge = True,
+  jitter = 0.12,
+  alpha = 0.45,
+  size = 4,
+  ax = ax,
+)
+
+# Fitted values from the model
+for i, species in enumerate(species_order):
+  for sex in sex_order:
+    row = fitted[(fitted["species"] == species) & (fitted["sex"] == sex)]
+    x = i + offsets[sex]
+    y = row["predicted"].iloc[0]
+    ax.hlines(y, x - 0.15, x + 0.15, color="black", linewidth=2)
+
+ax.set_xlabel("Species")
+ax.set_ylabel("Body mass (g)")
+ax.set_title("Body mass by species and sex (fitted values in black)")
+ax.legend(title = "Sex", frameon = False)
+sns.despine(ax = ax)
+
+plt.show()
+```
+
+- The reference group are female Adelie penguins.
+- Changing each categorical variable, `species` or `sex`, yields a change in the mean.
+- Adelie and Chinstrap penguins have similar body masses. This explains why `"Is Chinstrap"` has little effect (small coefficient) and relatively large $p$-value.
+
+## Issues
+
+- In the EDA page, `female` was mapped to orange and `male` was mapped to blue. Here the colors are switched.
+- Our Quarto pages have to reload nearly the same packages in each case.
+- Some of the plots are long. Editing some of the options/settings is fragile because we hardcoded some values instead of using variables.
+- What if we chose to analyze a different regression, or we added a continuous variable to the model? The regression table code would have to change in a few places.
+
+The fix for most of these problems (and possibly others not listed here) is to **put most of the project code inside functions**.

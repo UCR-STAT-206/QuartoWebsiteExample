@@ -8,3 +8,24 @@ subtitle: "STAT 206 (MSBA)"
 - Quarto
 - Conda/Micromamba
 - GitHub repository with GitHub Pages
+- Grit
+
+## Packages
+
+See `environment.yml` for the latest version.
+At the time of writing, the file had the following information:
+
+
+```{text}
+name: quarto_web
+channels:
+  - conda-forge
+dependencies:
+  - python=3.14
+  - ipykernel
+  - jupyter
+  - matplotlib
+  - pandas
+  - seaborn
+  - statsmodels
+```

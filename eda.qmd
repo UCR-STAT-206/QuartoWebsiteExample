@@ -1,3 +1,85 @@
 ---
 title: "Exploratory Data Analysis"
 ---
+
+## Aside: Hiding code chunks
+
+Unless you're communicating to a technical audience that is specifically interested in seeing your code, you should consider using Quarto's chunk options to hide the low-level details of your analysis.
+The `#| echo: false` option will disable showing code in the output.
+Check the `eda.qmd` source on GitHub to see how we load the packages and data.
+
+```{python}
+#| echo: false
+import pandas as pd
+import seaborn as sns
+
+penguins = pd.read_csv("penguins.csv").dropna()
+```
+
+## Checking for balance across groups
+
+```{python}
+#| echo: false
+penguins.groupby(["species", "sex"]).agg(
+  n = ("species", "count")
+)
+```
+
+The Adelie and Chinstrap groups are perfectly balanced, even after dropping entries with missing values.
+This will be an advantage for any hypothesis tests and suggests some control over confounding.
+However, keep in mind we are not looking at `island`; we saw before that it can be used as a proxy for `species`.
+
+## Some descriptive statistics
+
+```{python}
+#| echo: false
+#| fig-align: "center"
+#| label: fig-bodymass
+#| fig-cap: "Average body mass by species and sex."
+fig = sns.catplot(
+  data = penguins,
+  kind = "bar",
+  x = "species",
+  y = "body_mass_g",
+  hue = "sex",
+  errorbar = None,
+)
+
+fig.despine(left = True)
+fig.set_axis_labels("", "Body mass (g)")
+fig.legend.set_title("")
+
+fig
+```
+
+
+```{python}
+#| echo: false
+agg_dict = {
+  "n": ("species", "count"),
+  "Body Mass (g)": ("body_mass_g", "mean"),
+}
+
+(
+  penguins
+  .groupby("species")
+  .agg(**agg_dict)
+  .round(2)
+  .reset_index()
+)
+```
+
+```{python}
+#| echo: false
+(
+  penguins
+  .groupby("sex")
+  .agg(**agg_dict)
+  .round(2)
+  .reset_index()
+)
+```
+
+Treated separately, we can see that male penguins have a higher body mass across each species (@fig-bodymass)
+When combined, the female penguins bring down the average body mass for each species.
+We can see this effect by examining average body mass by sex or species alone.
